@@ -54,6 +54,11 @@ $this->menu=array(
 	}
 ?>
 
+<div class="init-btn">
+	<button onclick="initPrecios()">Inicializar precios</button>
+</div>
+
+
 <script type="text/javascript">
 	var mainStore = '<?php echo $main_store; ?>';
 	$(".prices-admin").hide();
@@ -64,4 +69,8 @@ $this->menu=array(
 		$(".prices-admin-"+$(this).attr('id')).show();
 		$(".store-name").text($(this).text());
 	});
+
+	function initPrecios() {
+		window.location.replace("/uhff/uhff/productPriceByStore/init");
+	}
 </script>

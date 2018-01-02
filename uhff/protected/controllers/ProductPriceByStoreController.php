@@ -32,7 +32,7 @@ class ProductPriceByStoreController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete', 'init'),
 				'users'=> Users::model()->administratorUserames(),
 			),
 			array('deny',  // deny all users
@@ -167,5 +167,26 @@ class ProductPriceByStoreController extends Controller
 			echo CActiveForm::validate($model);
 			Yii::app()->end();
 		}
+	}
+
+	public function actionInit()
+	{
+		$productsList = Products::model()->findAll();
+		$storesList = Stores::model()->findAll();
+		$prices = ProductPriceByStore::model()->findAll();
+
+		if (sizeof($prices) == 0) {
+			foreach ($storesList as $store) {
+				foreach ($productsList as $product) {
+					$price = new ProductPriceByStore();
+					$price->stores_id = $store->id;
+					$price->products_id = $product->id;
+					$price->price = 0;
+					$price->description = "nombre";
+					$price->save();
+				}
+			}
+		}
+		$this->redirect('admin');
 	}
 }

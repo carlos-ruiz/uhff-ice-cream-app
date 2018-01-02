@@ -40,6 +40,7 @@ $this->menu=array(
 					'dataProvider'=>$model->searchAdmin($store->id),
 					'filter'=>$model,
 					'columns'=>array(
+						'id',
 						array( 'name'=>'product_search', 'value'=>'$data->productPrice->product->name'),
 						array( 'name'=>'product_description_search', 'value'=>'$data->productPrice->description'),
 						'quantity',
@@ -55,6 +56,11 @@ $this->menu=array(
 	}
 ?>
 
+<div class="init-btn">
+	<button onclick="initIventarios()">Inicializar inventarios</button>
+	<button onclick="addIventarios()">Agregar inventarios</button>
+</div>
+
 <script type="text/javascript">
 	var mainStore = '<?php echo $main_store; ?>';
 	$(".prices-admin").hide();
@@ -65,4 +71,14 @@ $this->menu=array(
 		$(".prices-admin-"+$(this).attr('id')).show();
 		$(".store-name").text($(this).text());
 	});
+
+	function initIventarios() {
+		window.location.replace("/uhff/uhff/inventory/init");
+	}
+
+	function addIventarios() {
+		
+		
+		window.location.replace("/uhff/uhff/inventory/init");
+	}
 </script>

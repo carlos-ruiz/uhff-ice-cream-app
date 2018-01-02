@@ -189,6 +189,6 @@ class InventoryController extends Controller
 				$inventory->save();
 			}
 		}
-		$this->redirect('index');
+		$this->redirect('admin');
 	}
 }
