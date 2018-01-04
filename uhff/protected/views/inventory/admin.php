@@ -23,7 +23,7 @@ $this->menu=array(
 <?php  
 	foreach ($stores as $i => $store) {
 		if ($store->name != 'Todas') { ?>
-			<button class="store-btn <?php if ($i==0){echo 'selected';}?>" id="<?= $store->id ?>"><?= $store->name ?></button>
+			<button class="store-btn <?php if ($i==0){echo 'active';}?>" id="<?= $store->id ?>"><?= $store->name ?></button>
 <?php 
 		} 
 	}
@@ -70,6 +70,8 @@ $this->menu=array(
 		$(".prices-admin").hide();
 		$(".prices-admin-"+$(this).attr('id')).show();
 		$(".store-name").text($(this).text());
+		$(".store-btn").removeClass('active');
+		$(this).addClass('active');
 	});
 
 	function initIventarios() {

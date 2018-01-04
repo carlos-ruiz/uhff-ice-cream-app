@@ -155,3 +155,7 @@
 	border-radius: 10px;
 	display: inline-block;
 }
+
+button.active {
+	background-color: #72aed0;
+}
