@@ -8,6 +8,7 @@
  * @property string $name
  * @property string $description
  * @property string $image
+ * @property string $measurement_unit
  *
  * The followings are the available model relations:
  * @property Inventory[] $inventories
@@ -31,10 +32,12 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, image', 'required'),
+			array('name, measurement_unit', 'required'),
+			array('image', 'required', 'on'=>'insert'),
 			array('name', 'length', 'max'=>100),
 			array('description', 'length', 'max'=>256),
-			array('image', 'file', 'types'=>'jpg, jpeg, gif, png', 'safe' => false),
+			array('image', 'file', 'types'=>'jpg, jpeg, gif, png', 'on'=>'insert'),
+			array('image', 'file', 'types'=>'jpg, jpeg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, name, description, image', 'safe', 'on'=>'search'),
@@ -64,6 +67,7 @@ class Products extends CActiveRecord
 			'name' => 'Nombre',
 			'description' => 'Descripción',
 			'image' => 'Imágen',
+			'measurement_unit' => 'Unidad de medida',
 		);
 	}
 

@@ -3,9 +3,9 @@
 /* @var $model Products */
 
 $this->breadcrumbs=array(
-	'Products'=>array('admin'),
+	'Productos'=>array('admin'),
 	$model->name=>array('view','id'=>$model->id),
-	'Update',
+	'Editar',
 );
 
 $this->menu=array(

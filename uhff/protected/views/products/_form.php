@@ -27,6 +27,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'measurement_unit'); ?>
+		<?php echo $form->textField($model,'measurement_unit',array('size'=>60,'maxlength'=>100)); ?>
+		<?php echo $form->error($model,'measurement_unit'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textField($model,'description',array('size'=>60,'maxlength'=>256)); ?>
 		<?php echo $form->error($model,'description'); ?>

@@ -5,7 +5,8 @@
 <div class="sale-detail">
 	<div class="ok-button">OK</div>
 	<div class="sale-options">
-		<?php foreach ($product->productPrices as $price) { ?>
+		<?php foreach ($product->productPrices as $price) { 
+			if($price->stores_id == $store_id) { ?>
 			<div class="sale-option">
 				<div class="product-to-buy" data-product="<?php echo $price->id; ?>">0</div>
 				<div class="product-price">
@@ -17,7 +18,7 @@
 					<div class="selector-down">-</div>
 				</div>
 			</div>
-		<?php } ?>
+		<?php }} ?>
 	</div>
 </div>
 

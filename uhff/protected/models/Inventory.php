@@ -93,6 +93,7 @@ class Inventory extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>false,
 		));
 	}
 
@@ -114,7 +115,9 @@ class Inventory extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>false,
 			'sort'=>array(
+				'defaultOrder'=>'quantity ASC',
 		        'attributes'=>array(
 		            'product_search'=>array(
 		                'asc'=>'product.name',

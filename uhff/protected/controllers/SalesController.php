@@ -123,8 +123,14 @@ class SalesController extends Controller
 	public function actionIndex()
 	{
 		$this->layout='//layouts/sales';
-		$products = Products::model()->findAll();
 		$user = Users::model()->findByUsername(Yii::app()->user->name);
+		$productsByStore = ProductPriceByStore::model()->findAll('stores_id='.$user->stores_id);
+		$products = array();
+		foreach ($productsByStore as $productStore) {
+			if (!in_array($productStore->product, $products)) {
+				array_push($products, $productStore->product);
+			}
+		}
 
 		if (session_status() == PHP_SESSION_NONE) {
 			session_start();
@@ -150,8 +156,10 @@ class SalesController extends Controller
 	{
 		$this->layout='//layouts/salesdetail';
 		$product = Products::model()->findByPk($id);
+		$user = Users::model()->findByUsername(Yii::app()->user->name);
 		$this->render('sale_detail',array(
 			'product'=>$product,
+			'store_id'=>$user->stores_id,
 		));
 	}
 

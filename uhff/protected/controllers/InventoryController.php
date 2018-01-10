@@ -32,7 +32,7 @@ class InventoryController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete','init'),
+				'actions'=>array('create','update','admin','delete','init', 'add'),
 				'users'=> Users::model()->administratorUserames(),
 			),
 			array('deny',  // deny all users
@@ -190,5 +190,19 @@ class InventoryController extends Controller
 			}
 		}
 		$this->redirect('admin');
+	}
+
+	public function actionAdd()
+	{
+		if (isset($_POST['arrayData'])) {
+			$data = $_POST['arrayData'];
+			foreach ($data as $id => $value) {
+				if ($value > 0) {
+					$inventoryItem = Inventory::model()->findByPk($id);
+					$inventoryItem->quantity += $value;
+					$inventoryItem->save();
+				}
+			}
+		}
 	}
 }

@@ -21,6 +21,7 @@ $this->menu=array(
 	'columns'=>array(
 		'name',
 		'description',
+		'measurement_unit',
 		'image',
 		array(
 			'class'=>'CButtonColumn',

@@ -156,6 +156,15 @@
 	display: inline-block;
 }
 
+button {
+	padding: 10px;
+	border-radius: 5px;
+}
+
 button.active {
 	background-color: #72aed0;
+}
+
+button:hover {
+	border: solid 2px #72aed0;
 }

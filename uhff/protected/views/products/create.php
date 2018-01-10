@@ -3,13 +3,12 @@
 /* @var $model Products */
 
 $this->breadcrumbs=array(
-	'Products'=>array('index'),
-	'Create',
+	'Productos'=>array('admin'),
+	'Nuevo',
 );
 
 $this->menu=array(
-	array('label'=>'List Products', 'url'=>array('index')),
-	array('label'=>'Manage Products', 'url'=>array('admin')),
+	array('label'=>'Administrar Productos', 'url'=>array('admin')),
 );
 ?>
 

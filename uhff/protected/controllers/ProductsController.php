@@ -95,15 +95,23 @@ class ProductsController extends Controller
 		if(isset($_POST['Products']))
 		{
 			$model->attributes=$_POST['Products'];
-			$model->image=CUploadedFile::getInstance($model,'image');
+			$uploadedImage=CUploadedFile::getInstance($model,'image');
+			if (empty($uploadedImage)) {
+				$model->image = $old_image;
+			}else{
+				$model->image = $uploadedImage;
+			}
             if($model->save())
             {
-                $model->image->saveAs('images/'.$model->image);
-				if(sizeof($imagesModel) == 1) {
-					if(is_file('images/'.$old_image)) {
-				        unlink('images/'.$old_image);
+            	if(!empty($uploadedImage))  // check if uploaded file is set or not
+                {
+	                $uploadedImage->saveAs('images/'.$uploadedImage);
+					if(sizeof($imagesModel) == 1) {
+						if(is_file('images/'.$old_image)) {
+					        unlink('images/'.$old_image);
+						}
 					}
-				}
+                }
 				$this->redirect(array('view','id'=>$model->id));
             }
 		}
