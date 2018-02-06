@@ -35,6 +35,7 @@ $this->menu=array(
 	<?php if (sizeof($inventoryList) == 0){ ?><button onclick="initIventarios()">Inicializar inventarios</button><?php } ?>
 	<button class="btn-show-add-fields">Agregar inventarios</button>
 	<button class="btn-save" onclick="addIventarios()">Guardar</button>
+	<button class="btn-cancel" onclick="hideAddFields()">Cancelar</button>
 </div>
 
 <?php  
@@ -66,6 +67,7 @@ $this->menu=array(
 	var currentStore = '<?php echo $main_store; ?>';
 	$(".prices-admin").hide();
 	$(".btn-save").hide();
+	$(".btn-cancel").hide();
 	$(".prices-admin-"+currentStore).show();
 
 	$(".store-btn").click(function() {
@@ -75,11 +77,13 @@ $this->menu=array(
 		$(".store-name").text($(this).text());
 		$(".store-btn").removeClass('active');
 		$(this).addClass('active');
+		markUnderStack();
 	});
 
 	$(".btn-show-add-fields").click(function (){
 		$(this).hide();
 		$(".btn-save").show();
+		$(".btn-cancel").show();
 		showAddFields();
 	});
 
@@ -110,8 +114,16 @@ $this->menu=array(
 
 	function showAddFields()
 	{
-		$("#inventory-grid-"+currentStore+">table.items>thead>tr:first").append('<th id="inventory-grid-7_c5"><a class="sort-link" href="#">Cantidad a agregar</a></th>');
-		$("#inventory-grid-"+currentStore+">table.items>tbody>tr").append("<td class='add-field'><input type='number' step='any' value='0'></td>");
+		$("#inventory-grid-"+currentStore+">table.items>thead>tr:first").append('<th id="inventory-grid-7_c5"><a class="sort-link inventory-col" href="#">Cantidad a agregar</a></th>');
+		$("#inventory-grid-"+currentStore+">table.items>tbody>tr").append("<td class='add-field inventory-col'><input type='number' step='any' value='0'></td>");
+	}
+
+	function hideAddFields()
+	{
+		$(".inventory-col").hide();
+		$(".btn-save").hide();
+		$(".btn-cancel").hide();
+		$(".btn-show-add-fields").show();
 	}
 
 	function markUnderStack ()

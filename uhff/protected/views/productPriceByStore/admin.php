@@ -29,6 +29,10 @@ $this->menu=array(
 <br/><br/>
 <h2 class="store-name"><?= $main_store_name ?></h2>
 
+<div class="init-btn">
+	<?php if (sizeof($productPricesByStore) == 0){ ?><button onclick="initPrecios()">Inicializar precios</button><?php } ?>
+</div>
+
 <?php  
 	foreach ($stores as $store) {
 		if ($store->name != 'Todas') { ?>
@@ -53,11 +57,6 @@ $this->menu=array(
 		} 
 	}
 ?>
-
-<div class="init-btn">
-	<button onclick="initPrecios()">Inicializar precios</button>
-</div>
-
 
 <script type="text/javascript">
 	var mainStore = '<?php echo $main_store; ?>';

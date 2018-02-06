@@ -23,6 +23,10 @@ $this->menu=array(
 		'id',
 		'name',
 		'description',
+		array(
+			'label'=>$model->getAttributeLabel('measure_units_id'),
+			'value'=>$model->measureUnit->name,
+		),
 	),
 )); ?>
 <br>

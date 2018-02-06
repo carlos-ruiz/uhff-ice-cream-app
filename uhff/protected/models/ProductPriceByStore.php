@@ -9,11 +9,16 @@
  * @property integer $products_id
  * @property string $price
  * @property string $description
+ * @property integer $secondary_measure_id
+ * @property double $sold_portions
  *
  * The followings are the available model relations:
+ * @property Inventory[] $inventories
+ * @property SecondaryMeasure $secondaryMeasure
  * @property Products $products
  * @property Stores $stores
  * @property Sales[] $sales
+ * @property Tickets[] $tickets
  */
 class ProductPriceByStore extends CActiveRecord
 {
@@ -35,13 +40,12 @@ class ProductPriceByStore extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('stores_id, products_id, price, description', 'required'),
-			array('stores_id, products_id', 'numerical', 'integerOnly'=>true),
-			array('price', 'numerical'),
-			array('price', 'length', 'max'=>45),
+			array('stores_id, products_id, secondary_measure_id', 'numerical', 'integerOnly'=>true),
+			array('price, sold_portions', 'numerical'),
 			array('description', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, stores_id, products_id, price, product_search', 'safe', 'on'=>'search'),
+			array('id, stores_id, products_id, price, product_search, description, secondary_measure_id, sold_portions', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -54,8 +58,11 @@ class ProductPriceByStore extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'product' => array(self::BELONGS_TO, 'Products', 'products_id'),
+			'secondaryMeasure' => array(self::BELONGS_TO, 'SecondaryMeasure', 'secondary_measure_id'),
 			'store' => array(self::BELONGS_TO, 'Stores', 'stores_id'),
 			'sales' => array(self::HAS_MANY, 'Sales', 'product_price_by_store_id'),
+			'tickets' => array(self::HAS_MANY, 'Tickets', 'product_price_by_store_id'),
+			'inventories' => array(self::HAS_MANY, 'Inventory', 'product_price_by_store_id'),
 		);
 	}
 
@@ -71,6 +78,8 @@ class ProductPriceByStore extends CActiveRecord
 			'product_search' => 'Producto',
 			'price' => 'Precio',
 			'description' => 'Descripción',
+			'secondary_measure_id' => 'Unidad de medida secundaria',
+			'sold_portions' => 'Porciones por unidad',
 		);
 	}
 
@@ -97,6 +106,8 @@ class ProductPriceByStore extends CActiveRecord
 		$criteria->compare('products_id',$this->products_id);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('description',$this->description,true);
+		$criteria->compare('secondary_measure_id',$this->secondary_measure_id);
+		$criteria->compare('sold_portions',$this->sold_portions);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -114,9 +125,12 @@ class ProductPriceByStore extends CActiveRecord
 		$criteria->compare('product.name',$this->product_search, true);
 		$criteria->compare('price',$this->price,true);
 		$criteria->compare('description',$this->description,true);
+		$criteria->compare('secondary_measure_id',$this->secondary_measure_id);
+		$criteria->compare('sold_portions',$this->sold_portions);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>false,
 			'sort'=>array(
 		        'attributes'=>array(
 		            'product_search'=>array(
@@ -138,5 +152,14 @@ class ProductPriceByStore extends CActiveRecord
 	public static function model($className=__CLASS__)
 	{
 		return parent::model($className);
+	}
+
+	public function getSecondaryMeasureUnits($product_id = 0){
+		$secondaryMeasureUnits = array();
+		if ($product_id > 0) {
+			$product = Products::model()->findByPk($product_id);
+			$secondaryMeasureUnits=$product->measureUnit->secondaryMeasures;
+		}
+		return CHtml::listData($secondaryMeasureUnits, 'id', 'name');
 	}
 }

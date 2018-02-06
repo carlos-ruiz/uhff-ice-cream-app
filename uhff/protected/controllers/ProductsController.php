@@ -32,7 +32,7 @@ class ProductsController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('create','update','admin','delete'),
+				'actions'=>array('create','update','admin','delete', 'loadSecondaryMeasureUnit'),
 				'users'=> Users::model()->administratorUserames(),
 			),
 			array('deny',  // deny all users
@@ -166,6 +166,18 @@ class ProductsController extends Controller
 		$this->render('admin',array(
 			'model'=>$model,
 		));
+	}
+
+	public function actionLoadSecondaryMeasureUnit()
+	{
+		if(isset($_POST)){
+			$product = $this->loadModel($_POST["ProductPriceByStore"]["products_id"]);
+			$list = $product->measureUnit->secondaryMeasures;
+        	// $data=CHtml::listData($data,'id','secondary_measure_id');
+			echo "<option value=\"0\">Sin unidad secundaria</option>";
+			foreach($list as $data)
+				echo "<option value=\"{$data->id}\">{$data->name}</option>";
+		}
 	}
 
 	/**

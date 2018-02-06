@@ -31,5 +31,14 @@ $this->menu=array(
 		),
 		'price',
 		'description',
+		array(
+			'label'=>$model->getAttributeLabel('product.measure_units_id'),
+			'value'=>$model->product->measureUnit->name,
+		),
+		array(
+			'label'=>$model->getAttributeLabel('secondary_measure_id'),
+			'value'=>$model->secondaryMeasure==null ? "N/A" : $model->secondaryMeasure->name,
+		),
+		'sold_portions',
 	),
 )); ?>

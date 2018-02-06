@@ -17,6 +17,10 @@
 	<?php echo CHtml::encode($data->description); ?>
 	<br />
 
+	<b><?php echo CHtml::encode($data->getAttributeLabel('measure_units_id')); ?>:</b>
+	<?php echo CHtml::encode($data->measureUnit->name); ?>
+	<br />
+
 	<b><?php echo CHtml::encode($data->getAttributeLabel('image')); ?>:</b>
 	<?php echo CHtml::encode($data->image); ?>
 	<br />

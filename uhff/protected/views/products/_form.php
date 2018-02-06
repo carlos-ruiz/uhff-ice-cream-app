@@ -27,9 +27,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'measurement_unit'); ?>
-		<?php echo $form->textField($model,'measurement_unit',array('size'=>60,'maxlength'=>100)); ?>
-		<?php echo $form->error($model,'measurement_unit'); ?>
+		<?php echo $form->labelEx($model,'measure_units_id'); ?>
+		<?php echo $form->dropDownList($model,'measure_units_id', CHtml::listData(MeasureUnits::model()->findAll(), 'id', 'name'), array('empty'=>'Seleccione la unidad de medida')); ?>
+		<?php echo $form->error($model,'measure_units_id'); ?>
 	</div>
 
 	<div class="row">

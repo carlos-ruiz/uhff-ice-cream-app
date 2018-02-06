@@ -132,12 +132,14 @@ class ProductPriceByStoreController extends Controller
 		$model=new ProductPriceByStore('search');
 		$model->unsetAttributes();  // clear any default values
 		$stores = Stores::model()->findAll();
+		$productPricesByStore = ProductPriceByStore::model()->findAll();
 		if(isset($_GET['ProductPriceByStore']))
 			$model->attributes=$_GET['ProductPriceByStore'];
 
 		$this->render('admin',array(
 			'model'=>$model,
 			'stores'=>$stores,
+			'productPricesByStore'=>$productPricesByStore,
 		));
 	}
 

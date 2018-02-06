@@ -1,27 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "products".
+ * This is the model class for table "secondary_measure".
  *
- * The followings are the available columns in table 'products':
+ * The followings are the available columns in table 'secondary_measure':
  * @property integer $id
  * @property string $name
- * @property string $description
- * @property string $image
+ * @property double $portion
  * @property integer $measure_units_id
  *
  * The followings are the available model relations:
  * @property ProductPriceByStore[] $productPriceByStores
  * @property MeasureUnits $measureUnits
  */
-class Products extends CActiveRecord
+class SecondaryMeasure extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return 'products';
+		return 'secondary_measure';
 	}
 
 	/**
@@ -32,16 +31,13 @@ class Products extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, measure_units_id', 'required'),
-			array('image', 'required', 'on'=>'insert'),
-			array('name', 'length', 'max'=>100),
-			array('description', 'length', 'max'=>256),
-			array('image', 'file', 'types'=>'jpg, jpeg, gif, png', 'on'=>'insert'),
-			array('image', 'file', 'types'=>'jpg, jpeg, gif, png', 'allowEmpty'=>true, 'on'=>'update'),
-			array('id, measure_units_id', 'numerical', 'integerOnly'=>true),
+			array('name, portion, measure_units_id', 'required'),
+			array('measure_units_id', 'numerical', 'integerOnly'=>true),
+			array('portion', 'numerical'),
+			array('name', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, description, image, measure_units_id', 'safe', 'on'=>'search'),
+			array('id, name, portion, measure_units_id', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -53,9 +49,8 @@ class Products extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			// 'inventories' => array(self::HAS_MANY, 'Inventory', 'products_id'),
-			'productPrices' => array(self::HAS_MANY, 'ProductPriceByStore', 'products_id'),
-			'measureUnit' => array(self::BELONGS_TO, 'MeasureUnits', 'measure_units_id'),
+			'productPriceByStores' => array(self::HAS_MANY, 'ProductPriceByStore', 'secondary_measure_id'),
+			'measureUnits' => array(self::BELONGS_TO, 'MeasureUnits', 'measure_units_id'),
 		);
 	}
 
@@ -67,8 +62,7 @@ class Products extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Nombre',
-			'description' => 'Descripción',
-			'image' => 'Imágen',
+			'portion' => 'Porción',
 			'measure_units_id' => 'Unidad de medida',
 		);
 	}
@@ -93,8 +87,7 @@ class Products extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('image',$this->image,true);
+		$criteria->compare('portion',$this->portion);
 		$criteria->compare('measure_units_id',$this->measure_units_id);
 
 		return new CActiveDataProvider($this, array(
@@ -106,7 +99,7 @@ class Products extends CActiveRecord
 	 * Returns the static model of the specified AR class.
 	 * Please note that you should have this exact method in all your CActiveRecord descendants!
 	 * @param string $className active record class name.
-	 * @return Products the static model class
+	 * @return SecondaryMeasure the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{

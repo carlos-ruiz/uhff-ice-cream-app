@@ -25,7 +25,17 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'products_id'); ?>
-		<?php echo $form->dropDownList($model,'products_id', CHtml::listData(Products::model()->findAll(), 'id', 'name'), array('empty'=>'Seleccione el producto')); ?>
+		<?php
+			$htmlOptions = array(
+				"ajax"=>array(
+				"url"=>$this->createUrl("/products/loadSecondaryMeasureUnit"),
+				"type"=>"POST",
+				"update"=>"#ProductPriceByStore_secondary_measure_id"
+				),
+				"empty"=>"Seleccione el producto",
+			);
+		?>
+		<?php echo $form->dropDownList($model,'products_id', CHtml::listData(Products::model()->findAll(), 'id', 'name'), $htmlOptions); ?>
 		<?php echo $form->error($model,'products_id'); ?>
 	</div>
 
@@ -39,6 +49,20 @@
 		<?php echo $form->labelEx($model,'description'); ?>
 		<?php echo $form->textField($model,'description',array('size'=>45,'maxlength'=>50)); ?>
 		<?php echo $form->error($model,'description'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'secondary_measure_id'); ?>
+		<?php echo $form->dropDownList($model,'secondary_measure_id',$model->getSecondaryMeasureUnits(isset($model->products_id)?$model->products_id:0), array("empty"=>"Seleccione unidad secundaria")); ?>
+							
+		<?php // echo $form->dropDownList($model,'secondary_measure_id', array(), array('empty'=>'Seleccione unidad secundaria')); ?>
+		<?php echo $form->error($model,'secondary_measure_id'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'sold_portions'); ?>
+		<?php echo $form->textField($model,'sold_portions',array('size'=>45,'maxlength'=>50)); ?>
+		<?php echo $form->error($model,'sold_portions'); ?>
 	</div>
 
 	<div class="row buttons">
