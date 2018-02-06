@@ -16,6 +16,7 @@
  */
 class Products extends CActiveRecord
 {
+	public $abbr;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -41,7 +42,7 @@ class Products extends CActiveRecord
 			array('id, measure_units_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, description, image, measure_units_id', 'safe', 'on'=>'search'),
+			array('id, name, description, image, measure_units_id, abbr', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -70,6 +71,7 @@ class Products extends CActiveRecord
 			'description' => 'Descripción',
 			'image' => 'Imágen',
 			'measure_units_id' => 'Unidad de medida',
+			'abbr' => 'Unidad de medida',
 		);
 	}
 
@@ -90,15 +92,26 @@ class Products extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
+		$criteria->with = array('measureUnit');
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('image',$this->image,true);
 		$criteria->compare('measure_units_id',$this->measure_units_id);
+		$criteria->compare('measureUnit.abbr',$this->abbr, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+		        'attributes'=>array(
+		            'abbr'=>array(
+		                'asc'=>'measureUnit.abbr',
+		                'desc'=>'measureUnit.abbr DESC',
+		            ),
+		            '*',
+		        ),
+		    ),
 		));
 	}
 

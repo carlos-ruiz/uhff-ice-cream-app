@@ -21,7 +21,7 @@ $this->menu=array(
 	'columns'=>array(
 		'name',
 		'description',
-		'measureUnit.abbr',
+		array('name'=>'abbr', 'value'=>'$data->measureUnit->abbr'),
 		'image',
 		array(
 			'class'=>'CButtonColumn',
