@@ -182,12 +182,37 @@ class InventoryController extends Controller
 		if (sizeof($inventoryList) == 0) {
 			$productPricesByStore = ProductPriceByStore::model()->findAll();
 			foreach ($productPricesByStore as $product_price) {
+				if($product_price->individual_inventory == 1) {
+					$inventory = new Inventory();
+					$inventory->product_price_by_store_id = $product_price->id;
+					$inventory->quantity = 0;
+					$inventory->quantity_min = 20;
+					$inventory->save();
+				}else{
+					$inventory = Inventory::model()->find('products_id='.$product_price->products_id.' and stores_id='.$product_price->stores_id);
+					if (!isset($inventory)) {
+						$inventory = new Inventory();
+						$inventory->product_price_by_store_id = $product_price->id;
+						$inventory->products_id = $product_price->products_id;
+						$inventory->stores_id = $product_price->stores_id;
+						$inventory->quantity = 0;
+						$inventory->quantity_min = 20;
+						$inventory->save();
+					}
+				}
+			}
+			/*
+			foreach ($productPricesByStore as $product_price) {
 				$inventory = new Inventory();
 				$inventory->product_price_by_store_id = $product_price->id;
 				$inventory->quantity = 0;
 				$inventory->quantity_min = 20;
+				if($product_price->individual_inventory == 0) {
+					$inventory->products_id = $product_price->products_id;
+				}
 				$inventory->save();
 			}
+			*/
 		}
 		$this->redirect('admin');
 	}

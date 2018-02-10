@@ -32,7 +32,7 @@ class TicketsController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'generate'),
+				'actions'=>array('create','update', 'generate', 'remove'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -171,7 +171,8 @@ class TicketsController extends Controller
 		}
 	}
 
-	public function actionGenerate() {
+	public function actionGenerate()
+	{
 		if (isset($_POST['product_id'])) {
 			if (session_status() == PHP_SESSION_NONE) {
 				session_start();
@@ -195,6 +196,27 @@ class TicketsController extends Controller
 				$ticket->token = $token;
 			}
 			$ticket->save();
+		}
+	}
+
+	public function actionRemove()
+	{
+		if (isset($_POST['product_id'])) {
+			if (session_status() == PHP_SESSION_NONE) {
+				session_start();
+			}
+			if (!isset($_SESSION['token'])) {
+				$_SESSION['token'] = time();
+			}
+			$token = $_SESSION['token'];
+			$criteria = new CDbCriteria();
+			$criteria->addCondition("product_price_by_store_id=:product_id");
+			$criteria->addCondition("token=:token");
+			$criteria->params = array(':product_id' => $_POST['product_id'], ':token' => $token);
+			$ticket = Tickets::model()->find($criteria);
+			if (isset($ticket)) {
+				$ticket->delete();
+			}
 		}
 	}
 }

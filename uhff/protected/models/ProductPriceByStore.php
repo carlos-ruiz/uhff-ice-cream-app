@@ -11,6 +11,7 @@
  * @property string $description
  * @property integer $secondary_measure_id
  * @property double $sold_portions
+ * @property integer $individual_inventory
  *
  * The followings are the available model relations:
  * @property Inventory[] $inventories
@@ -40,12 +41,12 @@ class ProductPriceByStore extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('stores_id, products_id, price, description', 'required'),
-			array('stores_id, products_id, secondary_measure_id', 'numerical', 'integerOnly'=>true),
+			array('stores_id, products_id, secondary_measure_id, individual_inventory', 'numerical', 'integerOnly'=>true),
 			array('price, sold_portions', 'numerical'),
 			array('description', 'length', 'max'=>50),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, stores_id, products_id, price, product_search, description, secondary_measure_id, sold_portions', 'safe', 'on'=>'search'),
+			array('id, stores_id, products_id, price, product_search, description, secondary_measure_id, sold_portions, individual_inventory', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -80,6 +81,7 @@ class ProductPriceByStore extends CActiveRecord
 			'description' => 'Descripción',
 			'secondary_measure_id' => 'Unidad de medida secundaria',
 			'sold_portions' => 'Porciones por unidad',
+			'individual_inventory' => 'Inventario individual',
 		);
 	}
 
@@ -108,6 +110,7 @@ class ProductPriceByStore extends CActiveRecord
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('secondary_measure_id',$this->secondary_measure_id);
 		$criteria->compare('sold_portions',$this->sold_portions);
+		$criteria->compare('individual_inventory',$this->individual_inventory);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -124,9 +127,10 @@ class ProductPriceByStore extends CActiveRecord
 		$criteria->compare('stores_id',$store_id);
 		$criteria->compare('product.name',$this->product_search, true);
 		$criteria->compare('price',$this->price,true);
-		$criteria->compare('description',$this->description,true);
+		$criteria->compare('t.description',$this->description,true);
 		$criteria->compare('secondary_measure_id',$this->secondary_measure_id);
 		$criteria->compare('sold_portions',$this->sold_portions);
+		$criteria->compare('individual_inventory',$this->individual_inventory);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

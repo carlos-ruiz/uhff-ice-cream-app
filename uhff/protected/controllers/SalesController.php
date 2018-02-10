@@ -214,6 +214,7 @@ class SalesController extends Controller
 		$tickets = Tickets::model()->findAll('token='.$token);
 		$user = Users::model()->findByUsername(Yii::app()->user->name);
 		foreach ($tickets as $ticket) {
+			// Se registra la venta
 			$sale = new Sales();
 			$sale->date = date('Y-m-d H:i:s');
 			$sale->quantity = $ticket->quantity;
@@ -221,7 +222,28 @@ class SalesController extends Controller
 			$sale->product_price_by_store_id = $ticket->product_price_by_store_id;
 			$sale->save();
 			// $ticket->delete();
+
+			// Se obtiene la cantidad de producto vendida
+			$productPriceByStore = ProductPriceByStore::model()->findByPk($sale->product_price_by_store_id);
+			$portion = 1;
+			if(isset($productPriceByStore->secondaryMeasure)){
+				$portion = $productPriceByStore->secondaryMeasure->portion;
+			}
+
+			echo "portion: ".$portion." - quantity: ".$sale->quantity;
+
+			$quantityToDiscount = $portion * $sale->quantity;
+			echo "<br/>quantityToDiscount: ".$quantityToDiscount;
+
+			// Se descuenta del inventario
+			$productInventory = Inventory::model()->find('product_price_by_store_id='.$sale->product_price_by_store_id);
+			if ($productPriceByStore->individual_inventory == 0) {
+				$productInventory = Inventory::model()->find('products_id='.$productPriceByStore->products_id.' and stores_id='.$productPriceByStore->stores_id);
+			}
+			$productInventory->quantity -= $quantityToDiscount;
+			$productInventory->save();
 		}
+			return;
 		$_SESSION['token'] = null;
 		$this->redirect('index');
 	}

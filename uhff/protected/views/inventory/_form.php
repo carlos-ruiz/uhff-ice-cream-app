@@ -18,9 +18,9 @@
 	<?php echo $form->errorSummary($model); ?>
 
 	<div class="row">
-		<?php $data = ProductPriceByStore::model()->findAll();
+		<?php $data = ProductPriceByStore::model()->findAll(array('order'=>'stores_id, products_id'));
 		foreach ($data as $value) {
-			$value->description = $value->product->name.' - '.$value->description; 
+			$value->description = $value->product->name.' - '.$value->description.' - '.$value->store->name; 
 		}
 		?>
 		<?php echo $form->labelEx($model,'product_price_by_store_id'); ?>

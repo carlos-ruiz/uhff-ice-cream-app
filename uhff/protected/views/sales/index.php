@@ -38,9 +38,10 @@
 				<?php foreach ($tickets as $ticket) { ?>
 				<tr>
 					<td><?php echo $ticket->quantity; ?></td>
-					<td><?php echo $ticket->product_id->product->name." - ".$ticket->product_id->description; ?></td>
-					<td><?php echo "$".number_format($ticket->product_id->price, 2, '.', ','); ?></td>
-					<td><?php echo "$".number_format($ticket->quantity*$ticket->product_id->price, 2, '.', ','); ?></td>
+					<td><?php echo $ticket->product->product->name." - ".$ticket->product->description; ?></td>
+					<td><?php echo "$".number_format($ticket->product->price, 2, '.', ','); ?></td>
+					<td><?php echo "$".number_format($ticket->quantity*$ticket->product->price, 2, '.', ','); ?></td>
+					<td><input class="remove-button" type="button" name="remove" data-id="<?= $ticket->product->id ?>" value="X"/></td>
 				</tr>
 				<?php } ?>
 				<tr>
@@ -65,6 +66,19 @@
 			event.preventDefault();
 			$("#show_modal").attr("href", "saleDetail/"+$(this).data('id'));
 			$("#show_modal").trigger( "click" );
+		});
+
+		$(".remove-button").click(function(){
+			event.preventDefault();
+			product_id = $(this).data('id');
+			$.ajax({
+				url:"/uhff/uhff/tickets/remove", //the page containing php script
+				type: "post", //request type,
+				data: {product_id: product_id},
+				success:function(result){
+					window.location.replace("/uhff/uhff/sales/index");
+				}
+			});
 		});
 	});
 </script>

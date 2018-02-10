@@ -94,8 +94,8 @@ class Products extends CActiveRecord
 		$criteria=new CDbCriteria;
 		$criteria->with = array('measureUnit');
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
+		$criteria->compare('t.id',$this->id);
+		$criteria->compare('t.name',$this->name,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('image',$this->image,true);
 		$criteria->compare('measure_units_id',$this->measure_units_id);
@@ -103,6 +103,7 @@ class Products extends CActiveRecord
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'pagination'=>false,
 			'sort'=>array(
 		        'attributes'=>array(
 		            'abbr'=>array(

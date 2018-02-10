@@ -49,7 +49,7 @@ $this->menu=array(
 					'columns'=>array(
 						'id',
 						array( 'name'=>'product_search', 'value'=>'$data->productPrice->product->name'),
-						array( 'name'=>'product_description_search', 'value'=>'$data->productPrice->description'),
+						array( 'name'=>'product_description_search', 'value'=>'isset($data->product)?"N/A":$data->productPrice->description'),
 						'quantity',
 						'quantity_min',
 						array(
@@ -129,8 +129,8 @@ $this->menu=array(
 	function markUnderStack ()
 	{
 		$("#inventory-grid-"+currentStore+">table.items>tbody>tr").each(function(){
-			quantity = parseInt($(this).children("td:eq(3)").text());
-			quantityMin = parseInt($(this).children("td:eq(4)").text());
+			quantity = parseInt($(this).children("td:eq(2)").text());
+			quantityMin = parseInt($(this).children("td:eq(3)").text());
 			if (quantity < quantityMin) {
 				$(this).css('color', 'red');
 			}

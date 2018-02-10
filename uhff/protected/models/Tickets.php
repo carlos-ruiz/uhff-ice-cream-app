@@ -48,7 +48,7 @@ class Tickets extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'product_id' => array(self::BELONGS_TO, 'ProductPriceByStore', 'product_price_by_store_id'),
+			'product' => array(self::BELONGS_TO, 'ProductPriceByStore', 'product_price_by_store_id'),
 		);
 	}
 

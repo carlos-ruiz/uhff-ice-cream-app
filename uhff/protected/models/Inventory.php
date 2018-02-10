@@ -8,6 +8,8 @@
  * @property integer $quantity
  * @property integer $quantity_min
  * @property integer $product_price_by_store_id
+ * @property integer $products_id
+ * @property integer $stores_id
  *
  * The followings are the available model relations:
  * @property ProductPriceByStore $productPriceByStore
@@ -33,11 +35,11 @@ class Inventory extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('quantity, quantity_min, product_price_by_store_id', 'required'),
-			array('quantity, quantity_min, product_price_by_store_id', 'numerical', 'integerOnly'=>true),
+			array('quantity, quantity_min', 'required'),
+			array('quantity, quantity_min, product_price_by_store_id, products_id, stores_id', 'numerical', 'integerOnly'=>true),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, quantity, quantity_min, product_price_by_store_id, product_description_search, product_search', 'safe', 'on'=>'search'),
+			array('id, quantity, quantity_min, product_price_by_store_id, products_id, stores_id, product_description_search, product_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -50,6 +52,8 @@ class Inventory extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'productPrice' => array(self::BELONGS_TO, 'ProductPriceByStore', 'product_price_by_store_id'),
+			'product' => array(self::BELONGS_TO, 'Products', 'products_id'),
+			'store' => array(self::BELONGS_TO, 'Stores', 'stores_id'),
 		);
 	}
 
@@ -65,6 +69,8 @@ class Inventory extends CActiveRecord
 			'product_description_search' => 'Descripción',
 			'quantity_min' => 'Cantidad Mínima',
 			'product_price_by_store_id' => 'Producto',
+			'products_id' => 'Producto',
+			'stores_id' => 'Sucursal',
 		);
 	}
 
@@ -102,16 +108,18 @@ class Inventory extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-		$criteria->with = array('productPrice');
-		$criteria->with = array('productPrice.product');
+		$criteria->with = array('productPrice', 'productPrice.product');
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('productPrice.stores_id',$store_id);
+		$criteria->compare('t.id',$this->id, false);
+		$criteria->compare('productPrice.stores_id',$store_id, true, 'OR');
+		$criteria->compare('t.stores_id',$store_id, false, 'OR');
 		$criteria->compare('product.name',$this->product_search, true);
 		$criteria->compare('productPrice.description',$this->product_description_search, true);
 		$criteria->compare('quantity',$this->quantity);
 		$criteria->compare('quantity_min',$this->quantity_min);
 		$criteria->compare('product_price_by_store_id',$this->product_price_by_store_id);
+		$criteria->compare('t.products_id',$this->products_id);
+		$criteria->compare('t.stores_id',$this->stores_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
