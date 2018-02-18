@@ -3,16 +3,15 @@
 /* @var $model SecondaryMeasure */
 
 $this->breadcrumbs=array(
-	'Secondary Measures'=>array('index'),
-	'Create',
+	'Unidades secundarias'=>array('admin'),
+	'Nueva',
 );
 
 $this->menu=array(
-	array('label'=>'List SecondaryMeasure', 'url'=>array('index')),
-	array('label'=>'Manage SecondaryMeasure', 'url'=>array('admin')),
+	array('label'=>'Administrar unidades secundarias', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Create SecondaryMeasure</h1>
+<h1>Nueva unidad secudnaria</h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

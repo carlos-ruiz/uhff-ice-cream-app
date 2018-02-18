@@ -6,6 +6,9 @@ $this->breadcrumbs=array(
 	'Unidades secundarias'=>array('admin'),
 	'Administrar',
 );
+$this->menu=array(
+	array('label'=>'Nueva unidad', 'url'=>array('create')),
+);
 ?>
 
 <h1>Administrar unidades secundarias</h1>

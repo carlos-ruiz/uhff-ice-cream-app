@@ -1200,3 +1200,19 @@ Stack trace:
 REQUEST_URI=/uhff/uhff/secondaryMeasure/admin
 HTTP_REFERER=http://localhost/uhff/uhff/secondaryMeasure/update/1
 ---
+2018/02/18 07:42:04 [error] [php] Trying to get property of non-object (/var/www/html/uhff/uhff/protected/controllers/SalesController.php:131)
+Stack trace:
+#0 /var/www/html/uhff/framework/web/filters/CFilterChain.php(134): SalesController->runAction()
+#1 /var/www/html/uhff/framework/web/filters/CFilter.php(40): CFilterChain->run()
+#2 /var/www/html/uhff/framework/web/CController.php(1148): CAccessControlFilter->filter()
+#3 /var/www/html/uhff/framework/web/filters/CInlineFilter.php(58): SalesController->filterAccessControl()
+#4 /var/www/html/uhff/framework/web/filters/CFilterChain.php(131): CInlineFilter->filter()
+#5 /var/www/html/uhff/framework/web/CController.php(291): CFilterChain->run()
+#6 /var/www/html/uhff/framework/web/CController.php(265): SalesController->runActionWithFilters()
+#7 /var/www/html/uhff/framework/web/CWebApplication.php(282): SalesController->run()
+#8 /var/www/html/uhff/framework/web/CWebApplication.php(141): CWebApplication->runController()
+#9 /var/www/html/uhff/framework/base/CApplication.php(185): CWebApplication->processRequest()
+#10 /var/www/html/uhff/uhff/index.php(13): CWebApplication->run()
+REQUEST_URI=/uhff/uhff/sales/index?message=Corte+de+caja+exitoso.+Cantidad+a+entregar%3A+%24107.00
+in /var/www/html/uhff/uhff/protected/controllers/SalesController.php (131)
+in /var/www/html/uhff/uhff/index.php (13)
