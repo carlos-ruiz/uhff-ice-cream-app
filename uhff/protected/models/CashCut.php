@@ -14,6 +14,8 @@
  */
 class CashCut extends CActiveRecord
 {
+	public $user_search;
+	public $store_search;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -35,7 +37,7 @@ class CashCut extends CActiveRecord
 			array('amount', 'numerical'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, datetime, amount, users_id', 'safe', 'on'=>'search'),
+			array('id, datetime, amount, users_id, user_search, store_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -47,7 +49,7 @@ class CashCut extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'users' => array(self::BELONGS_TO, 'Users', 'users_id'),
+			'user' => array(self::BELONGS_TO, 'Users', 'users_id'),
 		);
 	}
 
@@ -58,9 +60,11 @@ class CashCut extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'datetime' => 'Datetime',
-			'amount' => 'Amount',
-			'users_id' => 'Users',
+			'datetime' => 'Fecha',
+			'amount' => 'Importe',
+			'users_id' => 'Usuario',
+			'user_search' => 'Usuario',
+			'store_search' => 'Sucursal',
 		);
 	}
 
@@ -81,14 +85,30 @@ class CashCut extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		$criteria->with = array('user', 'user.store');
 		$criteria->compare('id',$this->id);
 		$criteria->compare('datetime',$this->datetime,true);
-		$criteria->compare('amount',$this->amount);
+		$criteria->compare('user.name',$this->user_search,true);
+		$criteria->compare('store.name',$this->store_search,true);
+		$criteria->compare('amount',$this->amount,true);
 		$criteria->compare('users_id',$this->users_id);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.id ASC',
+		        'attributes'=>array(
+		            'user_search'=>array(
+		                'asc'=>'user.name',
+		                'desc'=>'user.name DESC',
+		            ),
+		            'store_search'=>array(
+		                'asc'=>'store.name',
+		                'desc'=>'store.name DESC',
+		            ),
+		            '*',
+		        ),
+		    ),
 		));
 	}
 

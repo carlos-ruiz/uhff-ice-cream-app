@@ -9,6 +9,7 @@
  * @property integer $quantity
  * @property integer $users_id
  * @property integer $product_price_by_store_id
+ * @property integer $amount
  *
  * The followings are the available model relations:
  * @property ProductPriceByStore $productPriceByStore
@@ -32,8 +33,9 @@ class Sales extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('date, quantity, users_id, product_price_by_store_id', 'required'),
+			array('date, quantity, amount, users_id, product_price_by_store_id', 'required'),
 			array('quantity, users_id, product_price_by_store_id', 'numerical', 'integerOnly'=>true),
+			array('amount', 'numerical', 'integerOnly'=>false),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, date, quantity, users_id, product_price_by_store_id', 'safe', 'on'=>'search'),
@@ -62,6 +64,7 @@ class Sales extends CActiveRecord
 			'id' => 'ID',
 			'date' => 'Fecha',
 			'quantity' => 'Cantidad',
+			'amount' => 'Importe',
 			'users_id' => 'Id de Usuario',
 			'product_price_by_store_id' => 'Id de PrecioProductoSucursal',
 		);
@@ -90,6 +93,7 @@ class Sales extends CActiveRecord
 		$criteria->compare('quantity',$this->quantity);
 		$criteria->compare('users_id',$this->users_id);
 		$criteria->compare('product_price_by_store_id',$this->product_price_by_store_id);
+		$criteria->compare('amount',$this->amount);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

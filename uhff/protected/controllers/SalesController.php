@@ -32,7 +32,7 @@ class SalesController extends Controller
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update', 'sale'),
+				'actions'=>array('create','update', 'sale', 'cashCut'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -122,6 +122,10 @@ class SalesController extends Controller
 	 */
 	public function actionIndex()
 	{
+		if (isset($_GET['message'])) {
+			$message = $_GET['message'];
+			echo "<script>alert(\"$message\");</script>";
+		}
 		$this->layout='//layouts/sales';
 		$user = Users::model()->findByUsername(Yii::app()->user->name);
 		$productsByStore = ProductPriceByStore::model()->findAll('stores_id='.$user->stores_id);
@@ -220,20 +224,20 @@ class SalesController extends Controller
 			$sale->quantity = $ticket->quantity;
 			$sale->users_id = $user->id;
 			$sale->product_price_by_store_id = $ticket->product_price_by_store_id;
+			$sale->amount = $ticket->product->price * $ticket->quantity;
 			$sale->save();
 			// $ticket->delete();
 
 			// Se obtiene la cantidad de producto vendida
 			$productPriceByStore = ProductPriceByStore::model()->findByPk($sale->product_price_by_store_id);
 			$portion = 1;
+			$sold_portions = $productPriceByStore->sold_portions;
+
 			if(isset($productPriceByStore->secondaryMeasure)){
 				$portion = $productPriceByStore->secondaryMeasure->portion;
 			}
 
-			echo "portion: ".$portion." - quantity: ".$sale->quantity;
-
-			$quantityToDiscount = $portion * $sale->quantity;
-			echo "<br/>quantityToDiscount: ".$quantityToDiscount;
+			$quantityToDiscount = $portion * $sale->quantity * $sold_portions;
 
 			// Se descuenta del inventario
 			$productInventory = Inventory::model()->find('product_price_by_store_id='.$sale->product_price_by_store_id);
@@ -243,8 +247,36 @@ class SalesController extends Controller
 			$productInventory->quantity -= $quantityToDiscount;
 			$productInventory->save();
 		}
-			return;
 		$_SESSION['token'] = null;
 		$this->redirect('index');
+	}
+
+	public function actionCashCut()
+	{
+		$lastCashCut = CashCut::model()->find(array('order' => 'datetime DESC'));
+		$dateFrom = date('2018-01-01 00:00:00');
+		if (isset($lastCashCut)) {
+			$dateFrom = $lastCashCut->datetime;
+		}
+		$user = Users::model()->findByUsername(Yii::app()->user->name);
+		$sales = Sales::model()->findAll(array('condition' => 'date BETWEEN "'.$dateFrom.'" AND NOW() AND users_id='.$user->id));
+		$total = 0; 
+		foreach ($sales as $sale) {
+			$total += $sale->amount;
+		}
+
+		if ($total == 0) {
+			$this->redirect(array('index', 'message'=>'No hay movimientos para hacer corte de caja'));
+		}
+		
+		$totalFormat = '$'.number_format($total, 2, '.', ',');
+
+		$cashCut = new CashCut();
+		$cashCut->datetime = date('Y-m-d H:i:s');
+		$cashCut->amount = $total;
+		$cashCut->users_id = $user->id;
+		$cashCut->save();
+
+		$this->redirect(array('index', 'message'=>"Corte de caja exitoso. Cantidad a entregar: $totalFormat"));
 	}
 }

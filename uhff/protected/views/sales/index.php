@@ -8,7 +8,7 @@
 		<h3>Sucursal: <?php echo $store; ?></h3>
 	</div>
 	<div class="logout">
-		<?php echo $username; ?> - <a href="/uhff/uhff/site/logout">Cerrar sesion</a>
+		<?php echo $username; ?> - <a href="/uhff/uhff/sales/cashcut" onclick="return confirm('Deseas hacer un corte de caja ahora?');">Corte de caja</a> - <a href="/uhff/uhff/site/logout" onclick="return confirm('Deseas salir sin hacer corte de caja?');">Cerrar sesion</a>
 	</div>
 	<hr>
 	<div class="left-side">
@@ -35,7 +35,10 @@
 					<th>Precio</th>
 					<th>Importe</th>
 				</tr>
+				<?php $total = 0; ?>
 				<?php foreach ($tickets as $ticket) { ?>
+				<?php $amount = $ticket->quantity*$ticket->product->price;  ?>
+				<?php $total += $amount; ?>
 				<tr>
 					<td><?php echo $ticket->quantity; ?></td>
 					<td><?php echo $ticket->product->product->name." - ".$ticket->product->description; ?></td>
@@ -44,6 +47,10 @@
 					<td><input class="remove-button" type="button" name="remove" data-id="<?= $ticket->product->id ?>" value="X"/></td>
 				</tr>
 				<?php } ?>
+				<tr>
+					<td colspan="3">TOTAL</td>
+					<td><?php echo "$".number_format($total, 2, '.', ','); ?></td>
+				</tr>
 				<tr>
 					<td colspan="4" class="align-center"><a href='/uhff/uhff/sales/sale' class="btn">Vender</a></td>
 				</tr>

@@ -39,6 +39,8 @@
 					array('label'=>'Precios', 'url'=>array('/productPriceByStore/admin')),
 					// array('label'=>'Roles', 'url'=>array('/userRoles/index')),
 					array('label'=>'Inventario', 'url'=>array('/inventory/admin')),
+					array('label'=>'Cortes de caja', 'url'=>array('/cashCut/admin')),
+					array('label'=>'Unidades secundarias', 'url'=>array('/secondaryMeasure/admin')),
 					array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
 					array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
 				),

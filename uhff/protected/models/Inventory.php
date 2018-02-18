@@ -36,7 +36,8 @@ class Inventory extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('quantity, quantity_min', 'required'),
-			array('quantity, quantity_min, product_price_by_store_id, products_id, stores_id', 'numerical', 'integerOnly'=>true),
+			array('product_price_by_store_id, products_id, stores_id', 'numerical', 'integerOnly'=>true),
+			array('quantity, quantity_min', 'numerical', 'integerOnly'=>false),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, quantity, quantity_min, product_price_by_store_id, products_id, stores_id, product_description_search, product_search', 'safe', 'on'=>'search'),

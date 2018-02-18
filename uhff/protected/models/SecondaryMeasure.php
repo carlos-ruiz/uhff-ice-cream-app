@@ -15,6 +15,7 @@
  */
 class SecondaryMeasure extends CActiveRecord
 {
+	public $measureUnit_search;
 	/**
 	 * @return string the associated database table name
 	 */
@@ -37,7 +38,7 @@ class SecondaryMeasure extends CActiveRecord
 			array('name', 'length', 'max'=>45),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, name, portion, measure_units_id', 'safe', 'on'=>'search'),
+			array('id, name, portion, measure_units_id, measureUnit_search', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +65,7 @@ class SecondaryMeasure extends CActiveRecord
 			'name' => 'Nombre',
 			'portion' => 'Porción',
 			'measure_units_id' => 'Unidad de medida',
+			'measureUnit_search' => 'Unidad de medida',
 		);
 	}
 
@@ -84,14 +86,25 @@ class SecondaryMeasure extends CActiveRecord
 		// @todo Please modify the following code to remove attributes that should not be searched.
 
 		$criteria=new CDbCriteria;
-
+		$criteria->with = array('measureUnits');
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('portion',$this->portion);
 		$criteria->compare('measure_units_id',$this->measure_units_id);
+		$criteria->compare('measureUnits.name',$this->measureUnit_search, true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
+			'sort'=>array(
+				'defaultOrder'=>'t.id ASC',
+				'attributes'=>array(
+		            'measureUnit_search'=>array(
+		                'asc'=>'measureUnits.name',
+		                'desc'=>'measureUnits.name DESC',
+		            ),
+		            '*',
+		        ),
+			),
 		));
 	}
 
