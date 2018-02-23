@@ -32,4 +32,4 @@ $this->menu=array(
 <br>
 <hr>
 
-<div class="align-center"><img src="/uhff/uhff/images/<?= $model->image ?>" width="200" alt="Cafe"></div>
+<div class="align-center"><img src="<?php echo Yii::app()->request->baseUrl; ?>/images/<?= $model->image ?>" width="200" alt="<?= $model->image ?>"></div>

@@ -57,11 +57,11 @@
 				console.log(product_id);
 				if(quantity > 0) {
 					$.ajax({
-						url:"/uhff/uhff/tickets/generate", //the page containing php script
+						url:"<?php echo Yii::app()->request->baseUrl; ?>/tickets/generate", //the page containing php script
 						type: "post", //request type,
 						data: {product_id: product_id, quantity: quantity},
 						success:function(result){
-							window.location.replace("/uhff/uhff/sales/index");
+							window.location.replace("<?php echo Yii::app()->request->baseUrl; ?>/sales/index");
 						}
 					});
 				}

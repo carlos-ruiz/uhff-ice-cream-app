@@ -72,6 +72,6 @@ $this->menu=array(
 	});
 
 	function initPrecios() {
-		window.location.replace("/uhff/uhff/productPriceByStore/init");
+		window.location.replace("<?php echo Yii::app()->request->baseUrl; ?>/productPriceByStore/init");
 	}
 </script>

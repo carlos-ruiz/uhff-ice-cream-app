@@ -8,7 +8,7 @@
 		<h3>Sucursal: <?php echo $store; ?></h3>
 	</div>
 	<div class="logout">
-		<?php echo $username; ?> - <a href="/uhff/uhff/sales/cashcut" onclick="return confirm('Deseas hacer un corte de caja ahora?');">Corte de caja</a> - <a href="/uhff/uhff/site/logout" onclick="return confirm('Deseas salir sin hacer corte de caja?');">Cerrar sesion</a>
+		<?php echo $username; ?> - <a href="<?php echo Yii::app()->request->baseUrl; ?>/sales/cashcut" onclick="return confirm('Deseas hacer un corte de caja ahora?');">Corte de caja</a> - <a href="<?php echo Yii::app()->request->baseUrl; ?>/site/logout" onclick="return confirm('Deseas salir sin hacer corte de caja?');">Cerrar sesion</a>
 	</div>
 	<hr>
 	<div class="left-side">
@@ -16,7 +16,7 @@
 			<?php foreach ($products as $product) { ?>
 				<div class="product-item" data-id=<?php echo $product->id; ?>>
 					<div class="product-image">
-						<img src="/uhff/uhff/images/<?php echo $product->image; ?>">
+						<img src="<?php echo Yii::app()->request->baseUrl; ?>/images/<?php echo $product->image; ?>">
 					</div>
 					<div class="product-name"><b><?php echo $product->name; ?></b></div>
 				</div>
@@ -52,7 +52,7 @@
 					<td><?php echo "$".number_format($total, 2, '.', ','); ?></td>
 				</tr>
 				<tr>
-					<td colspan="4" class="align-center"><a href='/uhff/uhff/sales/sale' class="btn">Vender</a></td>
+					<td colspan="4" class="align-center"><a href='<?php echo Yii::app()->request->baseUrl; ?>/sales/sale' class="btn">Vender</a></td>
 				</tr>
 			</table>
 		</div>
@@ -79,11 +79,11 @@
 			event.preventDefault();
 			product_id = $(this).data('id');
 			$.ajax({
-				url:"/uhff/uhff/tickets/remove", //the page containing php script
+				url:"<?php echo Yii::app()->request->baseUrl; ?>/tickets/remove", //the page containing php script
 				type: "post", //request type,
 				data: {product_id: product_id},
 				success:function(result){
-					window.location.replace("/uhff/uhff/sales/index");
+					window.location.replace("<?php echo Yii::app()->request->baseUrl; ?>/sales/index");
 				}
 			});
 		});

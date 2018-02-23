@@ -91,7 +91,7 @@ $this->menu=array(
 
 	function initIventarios()
 	{
-		window.location.replace("/uhff/uhff/inventory/init");
+		window.location.replace("<?php echo Yii::app()->request->baseUrl; ?>/inventory/init");
 	}
 
 	function addIventarios()
@@ -103,11 +103,11 @@ $this->menu=array(
 			arrayData[num] = quantity;
 		});
 		$.ajax({
-			url:"/uhff/uhff/inventory/add", //the page containing php script
+			url:"<?php echo Yii::app()->request->baseUrl; ?>/inventory/add", //the page containing php script
 			type: "post", //request type,
 			data: {arrayData: arrayData},
 			success:function(result){
-				window.location.replace("/uhff/uhff/inventory/admin");
+				window.location.replace("<?php echo Yii::app()->request->baseUrl; ?>/inventory/admin");
 			}
 		});
 	}
