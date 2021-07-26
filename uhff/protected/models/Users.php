@@ -118,10 +118,6 @@ class Users extends CActiveRecord
 
 	public function validatePassword($password)
 	{
-		$pas = $this->password;
-		echo $pas."<br/>";
-		echo $password."<br/>";
-		echo crypt($password, "uhffhelados")."<br/>";
 		return hash_equals($this->password, crypt($password, "uhffhelados"));
 	}
 

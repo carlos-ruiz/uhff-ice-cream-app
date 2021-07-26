@@ -1,2 +1,5 @@
 uhff/protected/runtime/application.log
 uhff/protected/config/database.php
+uhff/database
+sftp-config.json
+docker
